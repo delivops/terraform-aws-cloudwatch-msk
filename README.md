@@ -1,6 +1,8 @@
-# Terraform-aws-target-group-monitor
+![image info](logo.jpeg)
 
-Terraform-aws-cloudwatch-msk is a Terraform module for setting up a notification system about cloudwatch msk metrics.
+# Terraform-aws-msk-cloudwatch
+
+Terraform-aws-msk-cloudwatch is a Terraform module for setting up a notification system about cloudwatch msk metrics.
 
 ## Installation
 
@@ -15,24 +17,38 @@ Include this repository as a module in your existing terraform code:
 
 ```python
 
-provider "aws" {
-  region = var.aws_region
-  }
-
 ################################################################################
 # AWS MSK
 ################################################################################
 
 
-module "msk" {
-  source = "../"
+provider "aws" {
+  region = "eu-west-1"
+}
 
-  msk_brocker_id = 3
-  cluster_name   = "kafka"
+resource "aws_sns_topic" "sns_topic" {
+  name         = "sns"
+  display_name = "sns"
+}
+
+resource "aws_sns_topic_subscription" "sns_subscription" {
+  confirmation_timeout_in_minutes = 1
+  endpoint_auto_confirms          = false
+  topic_arn                       = aws_sns_topic.sns_topic.arn
+  protocol                        = "https"
+  endpoint                        = "https://api.sns.com/v1/xxx"
+  depends_on                      = [aws_sns_topic.sns_topic]
+}
+module "msk_alarms" {
+  source              = "delivops/msk-alerts/aws"
+  #version            = "0.0.1"
+
+  cluster_name        = "your-cluster-name"
+  high_disk_threshold = 85
+  aws_sns_topic_arn   = "arn:aws:sns:region:account:topic"
   tags = {
-    Environment = "dev"
+    Environment = "production"
   }
-  aws_sns_topic_arn  = aws_sns_topic.opsgenie_topic.arn
 }
 
 ```
@@ -45,17 +61,18 @@ module "msk" {
    for more information look here: [Link text Here](https://docs.aws.amazon.com/msk/latest/developerguide/metrics-details.html)
 
 <!-- BEGIN_TF_DOCS -->
+
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.67.0 |
+| Name                                                   | Version   |
+| ------------------------------------------------------ | --------- |
+| <a name="requirement_aws"></a> [aws](#requirement_aws) | >= 4.67.0 |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.67.0 |
+| Name                                             | Version   |
+| ------------------------------------------------ | --------- |
+| <a name="provider_aws"></a> [aws](#provider_aws) | >= 4.67.0 |
 
 ## Modules
 
@@ -63,28 +80,29 @@ No modules.
 
 ## Resources
 
-| Name | Type |
-|------|------|
+| Name                                                                                                                                               | Type     |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | [aws_cloudwatch_metric_alarm.high_cpu_system](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
-| [aws_cloudwatch_metric_alarm.high_cpu_user](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
-| [aws_cloudwatch_metric_alarm.high_disk](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.high_cpu_user](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm)   | resource |
+| [aws_cloudwatch_metric_alarm.high_disk](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm)       | resource |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_aws_sns_topic_arn"></a> [aws\_sns\_topic\_arn](#input\_aws\_sns\_topic\_arn) | ARN of the SNS topic | `string` | n/a | yes |
-| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name of the MSK cluster | `string` | `null` | no |
-| <a name="input_high_cpu_system_enabled"></a> [high\_cpu\_system\_enabled](#input\_high\_cpu\_system\_enabled) | Enable high CPU system alarm | `bool` | `true` | no |
-| <a name="input_high_cpu_system_threshold"></a> [high\_cpu\_system\_threshold](#input\_high\_cpu\_system\_threshold) | The threshold for high CPU system usage | `number` | `90` | no |
-| <a name="input_high_cpu_user_enabled"></a> [high\_cpu\_user\_enabled](#input\_high\_cpu\_user\_enabled) | Enable high CPU user alarm | `bool` | `true` | no |
-| <a name="input_high_cpu_user_threshold"></a> [high\_cpu\_user\_threshold](#input\_high\_cpu\_user\_threshold) | The threshold for high CPU user usage | `number` | `90` | no |
-| <a name="input_high_disk_enabled"></a> [high\_disk\_enabled](#input\_high\_disk\_enabled) | Enable high disk alarm | `bool` | `true` | no |
-| <a name="input_high_disk_threshold"></a> [high\_disk\_threshold](#input\_high\_disk\_threshold) | The threshold for high disk usage | `number` | `85` | no |
-| <a name="input_msk_brocker_id"></a> [msk\_brocker\_id](#input\_msk\_brocker\_id) | The ID of the MSK broker to monitor | `number` | `null` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to the resources | `map(string)` | `{}` | no |
+| Name                                                                                                         | Description                             | Type          | Default | Required |
+| ------------------------------------------------------------------------------------------------------------ | --------------------------------------- | ------------- | ------- | :------: |
+| <a name="input_aws_sns_topic_arn"></a> [aws_sns_topic_arn](#input_aws_sns_topic_arn)                         | ARN of the SNS topic                    | `string`      | n/a     |   yes    |
+| <a name="input_cluster_name"></a> [cluster_name](#input_cluster_name)                                        | The name of the MSK cluster             | `string`      | `null`  |    no    |
+| <a name="input_high_cpu_system_enabled"></a> [high_cpu_system_enabled](#input_high_cpu_system_enabled)       | Enable high CPU system alarm            | `bool`        | `true`  |    no    |
+| <a name="input_high_cpu_system_threshold"></a> [high_cpu_system_threshold](#input_high_cpu_system_threshold) | The threshold for high CPU system usage | `number`      | `90`    |    no    |
+| <a name="input_high_cpu_user_enabled"></a> [high_cpu_user_enabled](#input_high_cpu_user_enabled)             | Enable high CPU user alarm              | `bool`        | `true`  |    no    |
+| <a name="input_high_cpu_user_threshold"></a> [high_cpu_user_threshold](#input_high_cpu_user_threshold)       | The threshold for high CPU user usage   | `number`      | `90`    |    no    |
+| <a name="input_high_disk_enabled"></a> [high_disk_enabled](#input_high_disk_enabled)                         | Enable high disk alarm                  | `bool`        | `true`  |    no    |
+| <a name="input_high_disk_threshold"></a> [high_disk_threshold](#input_high_disk_threshold)                   | The threshold for high disk usage       | `number`      | `85`    |    no    |
+| <a name="input_msk_brocker_id"></a> [msk_brocker_id](#input_msk_brocker_id)                                  | The ID of the MSK broker to monitor     | `number`      | `null`  |    no    |
+| <a name="input_tags"></a> [tags](#input_tags)                                                                | Tags to apply to the resources          | `map(string)` | `{}`    |    no    |
 
 ## Outputs
 
 No outputs.
+
 <!-- END_TF_DOCS -->

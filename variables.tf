@@ -36,24 +36,18 @@ variable "high_disk_enabled" {
   description = "Enable high disk alarm"
   type        = bool
   default     = true
-  
+
 }
 variable "high_disk_threshold" {
   description = "The threshold for high disk usage"
   type        = number
   default     = 85
-  
-}
-variable "msk_brocker_id" {
-  description = "The ID of the MSK broker to monitor"
-  type        = number
-  default     = null
-  
+
 }
 variable "cluster_name" {
   description = "The name of the MSK cluster"
   type        = string
   default     = null
-  
+
 }
 
