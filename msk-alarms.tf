@@ -1,6 +1,7 @@
 resource "aws_cloudwatch_metric_alarm" "high_disk" {
   for_each                  = toset(local.broker_ids) * var.high_disk_enabled ? 1 : 0
-  alarm_name                = "${var.cluster_name}-broker-${each.value}-high-disk"
+  alarm_name                = "MSK | ${var.cluster_name} | High Disk"
+  alarm_description         = "High Disk in cluster ${var.cluster_name} broker ${each.value}"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "2"
   metric_name               = "KafkaDataLogsDiskUsed"
@@ -8,7 +9,6 @@ resource "aws_cloudwatch_metric_alarm" "high_disk" {
   period                    = "120"
   statistic                 = "Average"
   threshold                 = var.high_disk_threshold
-  alarm_description         = "MSK Broker ${each.value} disk usage in cluster ${var.cluster_name} is too high"
   insufficient_data_actions = []
   alarm_actions             = [var.aws_sns_topic_arn]
   ok_actions                = [var.aws_sns_topic_arn]
@@ -25,7 +25,8 @@ resource "aws_cloudwatch_metric_alarm" "high_disk" {
 
 resource "aws_cloudwatch_metric_alarm" "high_cpu_user" {
   for_each                  = toset(local.broker_ids) * var.high_cpu_user_enabled ? 1 : 0
-  alarm_name                = "${var.cluster_name}-broker-${each.value}-high-cpu-user"
+  alarm_name                = "MSK | ${var.cluster_name} | High CPU User"
+  alarm_description         = "High CPU User in cluster ${var.cluster_name} broker ${each.value}"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "2"
   metric_name               = "CpuUser"
@@ -33,7 +34,6 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_user" {
   period                    = "120"
   statistic                 = "Average"
   threshold                 = var.high_cpu_user_threshold
-  alarm_description         = "MSK Broker ${each.value} CPU USER usage in ${var.cluster_name} is too high"
   insufficient_data_actions = []
   alarm_actions             = [var.aws_sns_topic_arn]
   ok_actions                = [var.aws_sns_topic_arn]
@@ -49,7 +49,8 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_user" {
 }
 resource "aws_cloudwatch_metric_alarm" "high_cpu_system" {
   for_each                  = toset(local.broker_ids) * var.high_cpu_system_enabled ? 1 : 0
-  alarm_name                = "${var.cluster_name}-broker-${each.value}-high-cpu-system"
+  alarm_name                = "MSK | ${var.cluster_name} | High CPU System"
+  alarm_description         = "High CPU System in cluster ${var.cluster_name} broker ${each.value}"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "2"
   metric_name               = "CpuSystem"
@@ -57,7 +58,6 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_system" {
   period                    = "120"
   statistic                 = "Average"
   threshold                 = var.high_cpu_system_threshold
-  alarm_description         = "MSK Broker ${each.value} CPU SYSTEM usage in ${var.cluster_name} is too high"
   insufficient_data_actions = []
   alarm_actions             = [var.aws_sns_topic_arn]
   ok_actions                = [var.aws_sns_topic_arn]
