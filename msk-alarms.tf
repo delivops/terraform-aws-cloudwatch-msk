@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_metric_alarm" "high_disk" {
   for_each                  = var.high_disk_enabled ? toset(local.broker_ids) : toset([])
-  alarm_name                = "MSK | ${var.cluster_name} | High Disk"
+  alarm_name                = "MSK | ${var.cluster_name}/${each.value} | High Disk"
   alarm_description         = "High Disk in cluster ${var.cluster_name} broker ${each.value}"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "2"
@@ -25,7 +25,7 @@ resource "aws_cloudwatch_metric_alarm" "high_disk" {
 
 resource "aws_cloudwatch_metric_alarm" "high_cpu_user" {
   for_each                  = var.high_cpu_user_enabled ? toset(local.broker_ids) : toset([])
-  alarm_name                = "MSK | ${var.cluster_name} | High CPU User"
+  alarm_name                = "MSK | ${var.cluster_name}/${each.value} | High CPU User"
   alarm_description         = "High CPU User in cluster ${var.cluster_name} broker ${each.value}"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "2"
@@ -49,7 +49,7 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_user" {
 }
 resource "aws_cloudwatch_metric_alarm" "high_cpu_system" {
   for_each                  = var.high_cpu_system_enabled ? toset(local.broker_ids) : toset([])
-  alarm_name                = "MSK | ${var.cluster_name} | High CPU System"
+  alarm_name                = "MSK | ${var.cluster_name}/${each.value} | High CPU System"
   alarm_description         = "High CPU System in cluster ${var.cluster_name} broker ${each.value}"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "2"
