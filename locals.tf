@@ -7,6 +7,6 @@ data "aws_msk_broker_nodes" "broker_nodes" {
 
 locals {
   broker_ids = [
-    for broker in data.aws_msk_broker_nodes.broker_nodes.node_info_list : broker.broker_id
+    for broker in data.aws_msk_broker_nodes.broker_nodes.node_info_list : tostring(broker.broker_id)
   ]
 }
