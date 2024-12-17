@@ -91,7 +91,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aws_sns_topic_arn"></a> [aws\_sns\_topic\_arn](#input\_aws\_sns\_topic\_arn) | ARN of the SNS topic | `string` | n/a | yes |
+| <a name="input_aws_sns_topics_arns"></a> [aws\_sns\_topics\_arns](#input\_aws\_sns\_topics\_arns) | List of ARNs for the SNS topics | `list(string)` | `[]` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name of the MSK cluster | `string` | `null` | no |
 | <a name="input_high_cpu_system_enabled"></a> [high\_cpu\_system\_enabled](#input\_high\_cpu\_system\_enabled) | Enable high CPU system alarm | `bool` | `true` | no |
 | <a name="input_high_cpu_system_threshold"></a> [high\_cpu\_system\_threshold](#input\_high\_cpu\_system\_threshold) | The threshold for high CPU system usage | `number` | `90` | no |
