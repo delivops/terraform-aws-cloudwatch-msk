@@ -45,7 +45,7 @@ module "msk_alarms" {
 
   cluster_name        = "your-cluster-name"
   high_disk_threshold = 85
-  aws_sns_topic_arn   = aws_sns_topic.sns_topic.arn
+  aws_sns_topics_arns   = [aws_sns_topic.sns_topic.arn]
   tags = {
     Environment = "production"
   }

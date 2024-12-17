@@ -15,11 +15,12 @@ resource "aws_sns_topic_subscription" "opsgenie_subscription" {
   endpoint                        = "https://api.opsgenie.com/v1/xxx"
   depends_on                      = [aws_sns_topic.opsgenie_topic]
 }
+
 module "msk_alarms" {
   source              = "delivops/msk-alerts/aws"
   cluster_name        = "your-cluster-name"
   high_disk_threshold = 85
-  aws_sns_topic_arn   = "arn:aws:sns:region:account:topic"
+  aws_sns_topics_arns   = [aws_sns_topic.sns_topic.arn]
   tags = {
     Environment = "production"
   }

@@ -3,11 +3,13 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
-variable "aws_sns_topic_arn" {
-  description = "ARN of the SNS topic"
-  type        = string
 
+variable "aws_sns_topics_arns" {
+  description = "List of ARNs for the SNS topics"
+  type        = list(string)
+  default     = []
 }
+
 variable "high_cpu_user_threshold" {
   description = "The threshold for high CPU user usage"
   type        = number
