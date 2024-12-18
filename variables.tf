@@ -4,7 +4,7 @@ variable "tags" {
   default     = {}
 }
 
-variable "aws_sns_topics_arns" {
+variable "global_sns_topics_arns" {
   description = "List of ARNs for the SNS topics"
   type        = list(string)
   default     = []
@@ -22,6 +22,12 @@ variable "high_cpu_user_enabled" {
   default     = true
 
 }
+variable "high_cpu_user_sns_topics_arns" {
+  description = "List of ARNs for the SNS topics"
+  type        = list(string)
+  default     = []
+
+}
 variable "high_cpu_system_threshold" {
   description = "The threshold for high CPU system usage"
   type        = number
@@ -34,6 +40,12 @@ variable "high_cpu_system_enabled" {
   default     = true
 
 }
+variable "high_cpu_system_sns_topics_arns" {
+  description = "List of ARNs for the SNS topics"
+  type        = list(string)
+  default     = []
+
+}
 variable "high_disk_enabled" {
   description = "Enable high disk alarm"
   type        = bool
@@ -44,6 +56,12 @@ variable "high_disk_threshold" {
   description = "The threshold for high disk usage"
   type        = number
   default     = 85
+
+}
+variable "high_disk_sns_topics_arns" {
+  description = "List of ARNs for the SNS topics"
+  type        = list(string)
+  default     = []
 
 }
 variable "cluster_name" {
