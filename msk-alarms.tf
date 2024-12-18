@@ -11,9 +11,9 @@ resource "aws_cloudwatch_metric_alarm" "high_disk" {
   statistic                 = "Average"
   threshold                 = var.high_disk_threshold
   treat_missing_data        = "breaching"
-  alarm_actions             = concat(var.high_disk_sns_topics_arns, var.global_sns_topics_arns)
-  ok_actions                = concat(var.high_disk_sns_topics_arns, var.global_sns_topics_arns)
-  insufficient_data_actions = concat(var.high_disk_sns_topics_arns, var.global_sns_topics_arns)
+  alarm_actions             = concat(var.high_disk_sns_arns, var.all_alarms_sns_arns)
+  ok_actions                = concat(var.high_disk_sns_arns, var.all_alarms_sns_arns)
+  insufficient_data_actions = concat(var.high_disk_sns_arns, var.all_alarms_sns_arns)
 
   dimensions = {
     "Cluster Name" = var.cluster_name
@@ -39,9 +39,9 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_user" {
   statistic                 = "Average"
   threshold                 = var.high_cpu_user_threshold
   treat_missing_data        = "breaching"
-  alarm_actions             = concat(var.high_cpu_user_sns_topics_arns, var.global_sns_topics_arns)
-  ok_actions                = concat(var.high_cpu_user_sns_topics_arns, var.global_sns_topics_arns)
-  insufficient_data_actions = concat(var.high_cpu_user_sns_topics_arns, var.global_sns_topics_arns)
+  alarm_actions             = concat(var.high_cpu_user_sns_arns, var.all_alarms_sns_arns)
+  ok_actions                = concat(var.high_cpu_user_sns_arns, var.all_alarms_sns_arns)
+  insufficient_data_actions = concat(var.high_cpu_user_sns_arns, var.all_alarms_sns_arns)
 
   dimensions = {
     "Cluster Name" = var.cluster_name
@@ -67,9 +67,9 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_system" {
   statistic                 = "Average"
   threshold                 = var.high_cpu_system_threshold
   treat_missing_data        = "breaching"
-  alarm_actions             = concat(var.high_cpu_system_sns_topics_arns, var.global_sns_topics_arns)
-  ok_actions                = concat(var.high_cpu_system_sns_topics_arns, var.global_sns_topics_arns)
-  insufficient_data_actions = concat(var.high_cpu_system_sns_topics_arns, var.global_sns_topics_arns)
+  alarm_actions             = concat(var.high_cpu_system_sns_arns, var.all_alarms_sns_arns)
+  ok_actions                = concat(var.high_cpu_system_sns_arns, var.all_alarms_sns_arns)
+  insufficient_data_actions = concat(var.high_cpu_system_sns_arns, var.all_alarms_sns_arns)
 
   dimensions = {
     "Cluster Name" = var.cluster_name

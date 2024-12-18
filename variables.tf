@@ -4,7 +4,7 @@ variable "tags" {
   default     = {}
 }
 
-variable "global_sns_topics_arns" {
+variable "all_alarms_sns_arns" {
   description = "List of ARNs for the SNS topics"
   type        = list(string)
   default     = []
@@ -22,7 +22,7 @@ variable "high_cpu_user_enabled" {
   default     = true
 
 }
-variable "high_cpu_user_sns_topics_arns" {
+variable "high_cpu_user_sns_arns" {
   description = "List of ARNs for the SNS topics"
   type        = list(string)
   default     = []
@@ -40,7 +40,7 @@ variable "high_cpu_system_enabled" {
   default     = true
 
 }
-variable "high_cpu_system_sns_topics_arns" {
+variable "high_cpu_system_sns_arns" {
   description = "List of ARNs for the SNS topics"
   type        = list(string)
   default     = []
@@ -58,7 +58,7 @@ variable "high_disk_threshold" {
   default     = 85
 
 }
-variable "high_disk_sns_topics_arns" {
+variable "high_disk_sns_arns" {
   description = "List of ARNs for the SNS topics"
   type        = list(string)
   default     = []
